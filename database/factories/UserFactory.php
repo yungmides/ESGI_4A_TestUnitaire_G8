@@ -19,7 +19,7 @@ class UserFactory extends Factory
             'firstname' => $this->faker->firstName(),
             'lastname' => $this->faker->lastName(),
             'email' => $this->faker->unique()->safeEmail(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password,
+            'password' => 'password', // password,
             'birthday' => $this->faker->dateTimeAD(Carbon::now()->subYears(13)->subDay()),
             'remember_token' => Str::random(10),
         ];
