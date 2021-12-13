@@ -17,6 +17,7 @@ class Item extends Model
     protected $fillable = [
         'name',
         'content',
+        'created_at'
     ];
 
     public function user() {

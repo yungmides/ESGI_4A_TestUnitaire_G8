@@ -14,7 +14,8 @@ class ItemFactory extends Factory
     public function definition()
     {
         return [
-            //
+            "name" => $this->faker->word(),
+            "content" => $this->faker->text(1000),
         ];
     }
 }

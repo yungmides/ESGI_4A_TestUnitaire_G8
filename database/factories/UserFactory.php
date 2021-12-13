@@ -19,8 +19,8 @@ class UserFactory extends Factory
             'firstname' => $this->faker->firstName(),
             'lastname' => $this->faker->lastName(),
             'email' => $this->faker->unique()->safeEmail(),
-            'password' => 'password', // password,
-            'birthday' => $this->faker->dateTimeAD(Carbon::now()->subYears(13)->subDay()),
+            'password' => 'passwordpassword', // password,
+            'birthday' => $this->faker->dateTime(Carbon::now()->subYears(20)->subDay()),
             'remember_token' => Str::random(10),
         ];
     }
