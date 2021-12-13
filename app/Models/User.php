@@ -18,7 +18,9 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'name',
+        'firstname',
+        'lastname',
+        'birthday',
         'email',
         'password',
     ];
@@ -33,12 +35,12 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function isValid(): bool {
+        return !empty($this->email)
+            && filter_var($this->email, FILTER_VALIDATE_EMAIL)
+            && !empty($this->firstname)
+            && !empty($this->lastname)
+            && !is_null($this->birthday)
+            && $this->birthday->addYears(13)->isBefore(Carbon::now());
+    }
 }

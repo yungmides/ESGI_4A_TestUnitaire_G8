@@ -23,6 +23,15 @@ services:
             - sail
         depends_on:
             - mysql
+    adminer:
+        image: 'adminer'
+        restart: always
+        networks:
+            - sail
+        depends_on:
+            -   mysql
+        ports:
+            -   "8080:8080"
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
