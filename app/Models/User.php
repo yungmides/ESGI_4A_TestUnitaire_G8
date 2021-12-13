@@ -17,11 +17,9 @@ class User extends Authenticatable
 
     private EmailSenderService $emailSenderService;
 
-    public function __construct(array $attributes = [], EmailSenderService $emailSenderService = null)
+    public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-
-        $this->emailSenderService = $emailSenderService ?? new EmailSenderService();
     }
 
     /**
@@ -70,16 +68,18 @@ class User extends Authenticatable
             throw new Exception("Veuillez attendre 30 minutes avant de créer une nouvelle tâche.");
         }
         if ($this->items()->where("name" , "=", $item->name)->first() !== null) {
+            // Nom pas unique
             throw new Exception("Une tâche avec ce nom existe déjà. Choisissez un autre nom.");
         }
         if ($this->items()->count() >= 10) {
+            // Trop d'items
             throw new Exception("La limite d'objets a été atteinte.");
         }
 
         // Tout est bon normalement
 
         // Mailing
-        if ($this->items()->count() == 7 && !$this->emailSenderService->sendEmail($this->email)) {
+        if ($this->items()->count() == 7 && !EmailSenderService::sendEmail($this->email)) {
             throw new Exception("Le mail ne s'est pas envoyé.");
         }
 
