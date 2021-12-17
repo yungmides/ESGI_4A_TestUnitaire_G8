@@ -28,7 +28,6 @@ class UserTest extends TestCase
         $this->user->birthday = Carbon::now()->subYears(20);
         $this->user->email = "test@email.com";
         $this->user->password = "passwordpassword";
-        $this->emailSenderService->expects($this->any())->method("sendEmail")->willReturn(true);
         $this->assertTrue($this->user->isValid());
     }
 
@@ -39,7 +38,6 @@ class UserTest extends TestCase
         $this->user->birthday = Carbon::now()->subYears(20);
         $this->user->email = "email.com";
         $this->user->password = "passwordpassword";
-        $this->emailSenderService->expects($this->any())->method("sendEmail")->willReturn(true);
         $this->assertFalse($this->user->isValid());
     }
     public function testUserPasswordTropCourt() {
@@ -49,7 +47,6 @@ class UserTest extends TestCase
         $this->user->birthday = Carbon::now()->subYears(20);
         $this->user->email = "test@email.com";
         $this->user->password = "pwd";
-        $this->emailSenderService->expects($this->any())->method("sendEmail")->willReturn(true);
         $this->assertFalse($this->user->isValid());
     }
     public function testUserPasswordTropLong() {
@@ -59,7 +56,6 @@ class UserTest extends TestCase
         $this->user->birthday = Carbon::now()->subYears(20);
         $this->user->email = "test@email.com";
         $this->user->password = "passwordpasswordpasswordpasswordpasswordpasswordpasswordpassword";
-        $this->emailSenderService->expects($this->any())->method("sendEmail")->willReturn(true);
         $this->assertFalse($this->user->isValid());
     }
     public function testUserTropJeune() {
@@ -69,7 +65,6 @@ class UserTest extends TestCase
         $this->user->birthday = Carbon::now()->subYears(12);
         $this->user->email = "test@email.com";
         $this->user->password = "passwordpassword";
-        $this->emailSenderService->expects($this->any())->method("sendEmail")->willReturn(true);
         $this->assertFalse($this->user->isValid());
     }
 

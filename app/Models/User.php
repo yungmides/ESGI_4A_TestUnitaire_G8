@@ -19,12 +19,14 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    private EmailSenderService $emailSenderService;
+    public EmailSenderService $emailSenderService;
 
-    public function __construct(array $attributes = [])
+    public function __construct(array $attributes = [], EmailSenderService $emailSenderService = null)
     {
+        $this->emailSenderService = $emailSenderService ?? new EmailSenderService();
         parent::__construct($attributes);
     }
+
 
     /**
      * The attributes that are mass assignable.
@@ -90,7 +92,8 @@ class User extends Authenticatable
         // Tout est bon normalement
 
         // Mailing
-        if ($this->items()->count() == 7 && !EmailSenderService::sendEmail($this->email)) {
+
+        if ($this->items()->count() == 7 && !$this->emailSenderService->sendEmail($this->email)) {
             throw new MailNotSentException("Le mail ne s'est pas envoyé.");
         }
 

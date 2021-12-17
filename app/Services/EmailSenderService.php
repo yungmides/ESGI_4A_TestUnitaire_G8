@@ -5,8 +5,9 @@ namespace App\Services;
 class EmailSenderService
 {
 
-    public static function sendEmail(string $email) {
-        // pas encore implémenté
+    public function sendEmail(string $email)
+    {
+        // TODO: pas encore implémenté
         return true;
     }
 

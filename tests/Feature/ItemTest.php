@@ -16,6 +16,14 @@ class ItemTest extends TestCase
 {
     use RefreshDatabase;
 
+    private EmailSenderService $emailSenderService;
+
+    protected function setUp(): void
+    {
+        $this->emailSenderService = $this->getMockBuilder(EmailSenderService::class)->onlyMethods(['sendEmail'])->getMock();
+        parent::setUp();
+    }
+
     public function testAddItemNormal() {
         $user = User::factory()->has(Item::factory()->count(5))->create();
         $item = $user->items()->make();
@@ -65,19 +73,18 @@ class ItemTest extends TestCase
         $item->content = "Test";
         $item->created_at = $user->items()->latest("created_at")->first()->created_at->addHour();
         $user->add($item);
-
     }
 
     public function testMailNotSent() {
         $this->expectException(MailNotSentException::class);
+        $this->emailSenderService->expects($this->any())->method("sendEmail")->willReturn(false);
+
         $user = User::factory()->has(Item::factory()->count(7))->create();
+        $user->emailSenderService = $this->emailSenderService;
         $item = $user->items()->make();
         $item->name = "Test";
         $item->content = "Test";
         $item->created_at = $user->items()->latest("created_at")->first()->created_at->addHour();
-
-        $emailMock = $this->getMockBuilder(EmailSenderService::class)->onlyMethods(['sendEmail'])->getMock();
-        $emailMock->expects($this->any())->method("sendEmail")->willReturn(false);
         $user->add($item);
 
     }
