@@ -42,7 +42,7 @@ class ItemTest extends TestCase
         $item = $user->items()->make();
         $item->name = "Test";
         $item->content = "Test";
-        $item->created_at = $user->items()->latest("created_at")->first()->created_at;
+        $item->created_at = $user->items()->latest("created_at")->first()->created_at; // Date de création de l'item égale à celle de l'item précédent
         $user->add($item);
 
     }
@@ -58,7 +58,7 @@ class ItemTest extends TestCase
         $user->add($item);
 
         $sameNameItem = $user->items()->make();
-        $sameNameItem->name = "Test";
+        $sameNameItem->name = "Test"; // Même nom que l'item précédent
         $sameNameItem->content = "AUtre content";
         $sameNameItem->created_at = $item->created_at->addHour();
         $user->add($sameNameItem);
@@ -67,7 +67,7 @@ class ItemTest extends TestCase
 
     public function testLimitExceeded() {
         $this->expectException(ItemLimitExceededException::class);
-        $user = User::factory()->has(Item::factory()->count(10))->create();
+        $user = User::factory()->has(Item::factory()->count(10))->create(); // Limite d'items atteinte
         $item = $user->items()->make();
         $item->name = "Test";
         $item->content = "Test";
@@ -77,7 +77,7 @@ class ItemTest extends TestCase
 
     public function testMailNotSent() {
         $this->expectException(MailNotSentException::class);
-        $this->emailSenderService->expects($this->any())->method("sendEmail")->willReturn(false);
+        $this->emailSenderService->expects($this->any())->method("sendEmail")->willReturn(false); // Mailer échouera
 
         $user = User::factory()->has(Item::factory()->count(7))->create();
         $user->emailSenderService = $this->emailSenderService;

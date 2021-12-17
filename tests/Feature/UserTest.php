@@ -13,13 +13,6 @@ class UserTest extends TestCase
 {
 
     private User $user;
-    private EmailSenderService $emailSenderService;
-
-    protected function setUp(): void
-    {
-        $this->emailSenderService = $this->getMockBuilder(EmailSenderService::class)->onlyMethods(['sendEmail'])->getMock();
-        parent::setUp();
-    }
 
     public function testUserNormal() {
         $this->user = new User();
@@ -36,7 +29,7 @@ class UserTest extends TestCase
         $this->user->firstname = "John";
         $this->user->lastname = "Doe";
         $this->user->birthday = Carbon::now()->subYears(20);
-        $this->user->email = "email.com";
+        $this->user->email = "email.com"; // Email invalide
         $this->user->password = "passwordpassword";
         $this->assertFalse($this->user->isValid());
     }
@@ -46,7 +39,7 @@ class UserTest extends TestCase
         $this->user->lastname = "Doe";
         $this->user->birthday = Carbon::now()->subYears(20);
         $this->user->email = "test@email.com";
-        $this->user->password = "pwd";
+        $this->user->password = "pwd"; // Password < 8 caractères
         $this->assertFalse($this->user->isValid());
     }
     public function testUserPasswordTropLong() {
@@ -55,14 +48,14 @@ class UserTest extends TestCase
         $this->user->lastname = "Doe";
         $this->user->birthday = Carbon::now()->subYears(20);
         $this->user->email = "test@email.com";
-        $this->user->password = "passwordpasswordpasswordpasswordpasswordpasswordpasswordpassword";
+        $this->user->password = "passwordpasswordpasswordpasswordpasswordpasswordpasswordpassword"; // Password > 40 caractères
         $this->assertFalse($this->user->isValid());
     }
     public function testUserTropJeune() {
         $this->user = new User();
         $this->user->firstname = "John";
         $this->user->lastname = "Doe";
-        $this->user->birthday = Carbon::now()->subYears(12);
+        $this->user->birthday = Carbon::now()->subYears(12); // User a 12 ans
         $this->user->email = "test@email.com";
         $this->user->password = "passwordpassword";
         $this->assertFalse($this->user->isValid());

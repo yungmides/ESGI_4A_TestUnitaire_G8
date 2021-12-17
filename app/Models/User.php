@@ -60,7 +60,7 @@ class User extends Authenticatable
             && !empty($this->firstname)
             && !empty($this->lastname)
             && strlen($this->password) >= 8
-            && strlen($this->password) < 40
+            && strlen($this->password) <= 40
             && !is_null($this->birthday)
             && $this->birthday->addYears(13)->isBefore(Carbon::now());
     }
@@ -75,7 +75,7 @@ class User extends Authenticatable
             $date = Carbon::parse($lastItem->created_at);
             $minutes = $date->diffInMinutes($item->created_at);
             if ($minutes < 30) {
-                // Pas le droit
+                // Pas le droit car trop proche de l'item précédent en terme de temps
                 throw new AddItemTooEarlyException("Veuillez attendre 30 minutes avant de créer une nouvelle tâche.");
             }
         }
@@ -89,14 +89,12 @@ class User extends Authenticatable
             throw new ItemLimitExceededException("La limite d'objets a été atteinte.");
         }
 
-        // Tout est bon normalement
-
-        // Mailing
-
         if ($this->items()->count() == 7 && !$this->emailSenderService->sendEmail($this->email)) {
+            // Mailing a échoué
             throw new MailNotSentException("Le mail ne s'est pas envoyé.");
         }
 
+        // Tout est bon normalement
         $item->save();
         return true;
     }
