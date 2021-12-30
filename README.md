@@ -3,7 +3,7 @@
 ## Membres
 
 - FRANCISCO-LEBLANC Sacha
-- PANIK Nikola
+- PANIC Nikola
 - SABER Mehdi
 
 ## Installation
