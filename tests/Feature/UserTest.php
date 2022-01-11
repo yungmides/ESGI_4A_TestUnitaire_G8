@@ -49,7 +49,7 @@ class UserTest extends TestCase
         $this->user->birthday = Carbon::now()->subYears(20);
         $this->user->email = "test@email.com";
         $this->user->password = "passwordpasswordpasswordpasswordpasswordpasswordpasswordpassword"; // Password > 40 caractères
-        $this->assertFalse($this->user->isValid());
+        $this->assertTrue($this->user->isValid());
     }
     public function testUserTropJeune() {
         $this->user = new User();
